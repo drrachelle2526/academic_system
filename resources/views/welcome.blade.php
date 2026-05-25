@@ -31,7 +31,7 @@
                     Login
                 </a>
 
-                <a href="#"
+                <a href="/register"
                    class="bg-sky-400 hover:bg-sky-500 text-white px-5 py-2 rounded-full shadow">
                     Get Started
                 </a>
