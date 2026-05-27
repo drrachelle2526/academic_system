@@ -3,205 +3,251 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Academic Monitoring System</title>
-
+    <title>Academic Monitoring System - EduMonitor</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+<body class="bg-[#dff3ff] text-slate-800 font-sans antialiased scroll-smooth">
 
-<body class="bg-[#dff3ff]">
-
-    <!-- NAVBAR -->
     <nav class="w-full py-6">
         <div class="max-w-7xl mx-auto bg-white rounded-full px-8 py-4 flex justify-between items-center shadow-lg">
+            <div class="flex items-center gap-2">
+                <i data-lucide="graduation-cap" class="h-8 w-8 text-sky-500"></i>
+                <h1 class="text-2xl font-bold text-sky-950">EduMonitor</h1>
+            </div>
 
-            <h1 class="text-2xl font-bold text-sky-500">
-                EduMonitor
-            </h1>
-
-            <ul class="hidden md:flex gap-8 text-gray-700 font-medium">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Features</a></li>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">Contact</a></li>
+            <ul class="hidden md:flex gap-8 text-slate-600 font-semibold">
+                <li><a href="#" class="hover:text-sky-500 transition-colors">Home</a></li>
+                <li><a href="#about" class="hover:text-sky-500 transition-colors">About Hierarchy</a></li>
+                <li><a href="#features" class="hover:text-sky-500 transition-colors">Features</a></li>
+                <li><a href="#contact" class="hover:text-sky-500 transition-colors">Contact Us</a></li>
             </ul>
 
-            <div class="flex gap-4">
-                <a href="/login" class="text-sky-500 font-semibold">
+            <div class="flex items-center gap-6">
+                <a href="/login" class="text-sky-600 hover:text-sky-700 font-bold transition-colors">
                     Login
                 </a>
-
                 <a href="/register"
-                   class="bg-sky-400 hover:bg-sky-500 text-white px-5 py-2 rounded-full shadow">
+                   class="bg-sky-500 hover:bg-sky-600 text-white px-6 py-2.5 rounded-full shadow font-bold transition-all transform hover:-translate-y-0.5">
                     Get Started
                 </a>
             </div>
-
         </div>
     </nav>
 
-    <!-- HERO SECTION -->
-    <section class="max-w-7xl mx-auto px-6 py-10">
+    <section class="max-w-7xl mx-auto px-6 py-6">
+        <div class="bg-sky-500 rounded-[40px] p-10 md:p-16 grid md:grid-cols-2 items-center gap-10 relative overflow-hidden shadow-xl">
+            <div class="relative z-10">
+                <div class="inline-flex items-center gap-2 bg-white/20 border border-white/30 rounded-full px-4 py-1.5 mb-6">
+                    <i data-lucide="shield" class="h-4 w-4 text-white"></i>
+                    <span class="text-white text-xs font-bold tracking-wide uppercase">Verified Access Infrastructure</span>
+                </div>
 
-        <div class="bg-sky-300 rounded-[40px] p-10 md:p-16 grid md:grid-cols-2 items-center gap-10 relative overflow-hidden shadow-xl">
-
-            <!-- Left -->
-            <div>
-
-                <p class="text-white text-sm mb-4">
-                    Academic Monitoring Platform
-                </p>
-
-                <h2 class="text-5xl font-extrabold text-white leading-tight">
-                    Web-Based Academic & Performance
-                     Monitoring System <br>
-                     
+                <h2 class="text-4xl md:text-5xl font-extrabold text-white leading-tight">
+                    Web-Based Academic & Performance Monitoring System
                 </h2>
 
-                <p class="mt-6 text-white text-lg">
-                    Empowering schools to manage academic performance,
-                    attendance and student records digitally.
+                <p class="mt-6 text-sky-100 text-lg leading-relaxed">
+                    Empowering schools to manage academic performance, records, and attendance dashboards seamlessly with secure role verification.
                 </p>
 
-                <div class="mt-8 flex gap-4">
-
-                    <a href="#"
-                       class="bg-white text-sky-500 px-6 py-3 rounded-full font-semibold shadow-md">
+                <div class="mt-8 flex flex-wrap gap-4">
+                    <a href="/register"
+                       class="bg-white text-sky-600 px-7 py-3.5 rounded-full font-bold shadow-md hover:bg-sky-50 transition-colors text-center">
                         Get Free Demo
                     </a>
-
-                    <a href="#"
-                       class="bg-sky-100 text-sky-600 px-6 py-3 rounded-full font-semibold">
-                        See Features
+                    <a href="#features"
+                       class="bg-sky-600/40 text-white border border-sky-300/30 px-7 py-3.5 rounded-full font-bold hover:bg-sky-600/60 transition-colors text-center">
+                        See System Features
                     </a>
-
                 </div>
-
             </div>
 
-            <!-- Right -->
-            <div class="relative">
-
+            <div class="relative z-10">
                 <img
                     src="https://images.unsplash.com/photo-1509062522246-3755977927d7"
-                    alt="students"
-                    class="rounded-3xl shadow-2xl w-full object-cover"
+                    alt="students inside secondary classroom"
+                    class="rounded-3xl shadow-2xl w-full max-h-[380px] object-cover border-4 border-white/20"
                 >
-
             </div>
 
-            <!-- Circle decorations -->
-            <div class="absolute top-10 right-20 w-72 h-72 border-[20px] border-sky-200 rounded-full opacity-40"></div>
-
-            <div class="absolute bottom-0 left-1/2 w-40 h-40 bg-sky-200 rounded-full opacity-30"></div>
-
+            <div class="absolute top-10 right-20 w-72 h-72 border-[20px] border-sky-400 rounded-full opacity-40"></div>
+            <div class="absolute bottom-0 left-1/2 w-40 h-40 bg-sky-400 rounded-full opacity-30"></div>
         </div>
-
     </section>
 
-    <!-- STATS -->
-    <section class="max-w-7xl mx-auto px-6 py-10">
-
-        <div class="bg-white rounded-[40px] p-10 shadow-lg">
-
-            <div class="grid md:grid-cols-3 gap-8 text-center">
-
-                <div>
-                    <h3 class="text-4xl font-bold text-sky-500">
-                        100+
-                    </h3>
-
-                    <p class="text-gray-600 mt-2">
-                        Primary Schools
-                    </p>
+    <section class="max-w-7xl mx-auto px-6 py-6">
+        <div class="bg-white rounded-[30px] p-8 shadow-md border border-sky-100">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 divide-y md:divide-y-0 md:divide-x divide-slate-100 text-center">
+                <div class="pt-4 md:pt-0">
+                    <h3 class="text-4xl font-black text-sky-500">100+</h3>
+                    <p class="text-slate-500 font-semibold mt-2">Primary Schools Consolidated</p>
                 </div>
-
-                <div>
-                    <h3 class="text-4xl font-bold text-sky-500">
-                        20,000+
-                    </h3>
-
-                    <p class="text-gray-600 mt-2">
-                        Students Managed
-                    </p>
+                <div class="pt-4 md:pt-0">
+                    <h3 class="text-4xl font-black text-sky-500">20,000+</h3>
+                    <p class="text-slate-500 font-semibold mt-2">Active Students Managed</p>
                 </div>
-
-                <div>
-                    <h3 class="text-4xl font-bold text-sky-500">
-                        500+
-                    </h3>
-
-                    <p class="text-gray-600 mt-2">
-                        Teachers Connected
-                    </p>
+                <div class="pt-4 md:pt-0">
+                    <h3 class="text-4xl font-black text-sky-500">500+</h3>
+                    <p class="text-slate-500 font-semibold mt-2">Verified Teachers Connected</p>
                 </div>
-
             </div>
-
         </div>
-
     </section>
 
-    <!-- FEATURES -->
-    <section class="max-w-7xl mx-auto px-6 pb-20">
-
-        <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">
-            Why EduMonitor
-        </h2>
-
-        <div class="grid md:grid-cols-4 gap-6">
-
-            <div class="bg-white p-8 rounded-3xl shadow-md">
-                <div class="text-4xl">📚</div>
-
-                <h3 class="mt-4 text-xl font-bold text-gray-800">
-                    Student Records
-                </h3>
-
-                <p class="mt-3 text-gray-600">
-                    Manage student information digitally.
+    <section id="about" class="max-w-7xl mx-auto px-6 py-10">
+        <div class="bg-sky-500 rounded-[40px] p-10 md:p-16 grid md:grid-cols-2 items-center gap-10 relative overflow-hidden shadow-xl">
+            
+            <div class="relative z-10">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-4 leading-tight">
+                    Hierarchical Verification System
+                </h2>
+                <p class="text-sky-100 mb-8 text-base leading-relaxed">
+                    EduMonitor maintains direct structural validation chains down from higher administrators to local institutional levels to safeguard metric parameters.
                 </p>
+                
+                <div class="space-y-6">
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0 border border-white/30">
+                            <i data-lucide="shield" class="h-5 w-5 text-white"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white text-base">System Administrator</h4>
+                            <p class="text-sm text-sky-100/90">Maintains systemic parameters and authenticates incoming Ward Education Officers (WEO).</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0 border border-white/30">
+                            <i data-lucide="users" class="h-5 w-5 text-white"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white text-base">Ward Education Officer (WEO)</h4>
+                            <p class="text-sm text-sky-100/90">Monitors performance indicators and verifies designated Head Teachers inside their ward.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0 border border-white/30">
+                            <i data-lucide="user-check" class="h-5 w-5 text-white"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white text-base">Head Teacher</h4>
+                            <p class="text-sm text-sky-100/90">Manages high-level institutional summaries and activates structural school staff accounts.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0 border border-white/30">
+                            <i data-lucide="file-text" class="h-5 w-5 text-white"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white text-base">Class / Academic Teacher</h4>
+                            <p class="text-sm text-sky-100/90">Inputs class grades, marks operational attendance, and organizes raw performance records.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="bg-white p-8 rounded-3xl shadow-md">
-                <div class="text-4xl">📈</div>
-
-                <h3 class="mt-4 text-xl font-bold text-gray-800">
-                    Performance Tracking
-                </h3>
-
-                <p class="mt-3 text-gray-600">
-                    Monitor academic progress easily.
-                </p>
+            <div class="relative z-10 flex justify-center items-center">
+                <img 
+                    src="https://images.pexels.com/photos/8618210/pexels-photo-8618210.jpeg?auto=compress&cs=tinysrgb&w=800" 
+                    alt="Verification Setup Chain Illustration" 
+                    class="rounded-3xl shadow-2xl w-full max-w-md border-4 border-white/20 object-cover max-h-[380px]"
+                />
             </div>
 
-            <div class="bg-white p-8 rounded-3xl shadow-md">
-                <div class="text-4xl">🧑‍🏫</div>
-
-                <h3 class="mt-4 text-xl font-bold text-gray-800">
-                    Teacher Management
-                </h3>
-
-                <p class="mt-3 text-gray-600">
-                    Organize teacher records efficiently.
-                </p>
-            </div>
-
-            <div class="bg-white p-8 rounded-3xl shadow-md">
-                <div class="text-4xl">📝</div>
-
-                <h3 class="mt-4 text-xl font-bold text-gray-800">
-                    Reports
-                </h3>
-
-                <p class="mt-3 text-gray-600">
-                    Generate academic reports instantly.
-                </p>
-            </div>
-
+            <div class="absolute top-10 right-20 w-72 h-72 border-[20px] border-sky-400 rounded-full opacity-40"></div>
+            <div class="absolute bottom-0 left-1/2 w-40 h-40 bg-sky-400 rounded-full opacity-30"></div>
         </div>
-
     </section>
 
+    <section id="features" class="max-w-7xl mx-auto px-6 py-10">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900">Powerful Core Features</h2>
+            <p class="text-slate-500 mt-2 font-medium">Everything needed to oversee administrative primary sector statistics.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="bg-white p-8 rounded-[30px] shadow-sm border border-sky-100 hover:shadow-md transition-shadow">
+                <div class="w-12 h-12 bg-sky-100 rounded-2xl flex items-center justify-center mb-5">
+                    <i data-lucide="folder-open" class="h-6 w-6 text-sky-600"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900">Student Records</h3>
+                <p class="mt-3 text-slate-600 text-sm leading-relaxed">
+                    Organize registration baselines and structural student demographics digitally inside searchable profile directories.
+                </p>
+            </div>
+
+            <div class="bg-white p-8 rounded-[30px] shadow-sm border border-sky-100 hover:shadow-md transition-shadow">
+                <div class="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center mb-5">
+                    <i data-lucide="trending-up" class="h-6 w-6 text-emerald-600"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900">Performance Tracking</h3>
+                <p class="mt-3 text-slate-600 text-sm leading-relaxed">
+                    Track academic trajectories across structural terms through secure marks logging frameworks.
+                </p>
+            </div>
+
+            <div class="bg-white p-8 rounded-[30px] shadow-sm border border-sky-100 hover:shadow-md transition-shadow">
+                <div class="w-12 h-12 bg-amber-100 rounded-2xl flex items-center justify-center mb-5">
+                    <i data-lucide="graduation-cap" class="h-6 w-6 text-amber-600"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900">Teacher Management</h3>
+                <p class="mt-3 text-slate-600 text-sm leading-relaxed">
+                    Authorize personnel verification workflows smoothly aligned to localized national assignment metrics.
+                </p>
+            </div>
+
+            <div class="bg-white p-8 rounded-[30px] shadow-sm border border-sky-100 hover:shadow-md transition-shadow">
+                <div class="w-12 h-12 bg-purple-100 rounded-2xl flex items-center justify-center mb-5">
+                    <i data-lucide="bar-chart-3" class="h-6 w-6 text-purple-600"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900">Instant Reports</h3>
+                <p class="mt-3 text-slate-600 text-sm leading-relaxed">
+                    Generate comprehensive institution evaluation summaries automatically using dynamic template frameworks.
+                </p>
+            </div>
+        </div>
+    </section>
+
+   <section id="contact" class="max-w-7xl mx-auto px-6 pb-12 pt-6">
+        <div class="bg-sky-500 rounded-[40px] p-10 md:p-14 text-center relative overflow-hidden shadow-2xl">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-4 relative z-10 leading-tight">
+                Ready to Transform Your School Configuration?
+            </h2>
+            <p class="text-sky-100 mb-8 max-w-2xl mx-auto text-base relative z-10 font-medium">
+                Join regional academic departments optimizing performance management workflows with EduMonitor framework security configurations.
+            </p>
+            
+            <div class="relative z-10">
+                <a href="/register"
+                   class="inline-block bg-white text-sky-600 hover:bg-sky-50 font-bold px-8 py-3.5 rounded-full transition-all shadow-lg transform hover:-translate-y-0.5">
+                    Get Started Right Now
+                </a>
+            </div>
+            
+            <div class="absolute -bottom-10 -right-10 w-48 h-48 bg-sky-400 rounded-full opacity-40"></div>
+            <div class="absolute -top-10 -left-10 w-32 h-32 bg-sky-400 rounded-full opacity-30"></div>
+        </div>
+    </section>
+
+    <footer class="bg-white py-8 border-t border-sky-100 shadow-md">
+        <div class="max-w-7xl mx-auto px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-2">
+                <i data-lucide="graduation-cap" class="h-5 w-5 text-sky-500"></i>
+                <span class="text-sky-950 font-bold tracking-wide">EduMonitor</span>
+            </div>
+            <p class="text-slate-500 text-sm text-center sm:text-right font-medium">
+                &copy; {{ date('Y') }} EduMonitor &bull; United Republic of Tanzania. All institutional rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            lucide.createIcons();
+        });
+    </script>
 </body>
 </html>
