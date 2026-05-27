@@ -80,7 +80,7 @@
                 </div>
             @endif
 
-           <div id="school-select-container" class="mt-5 hidden">
+           <div id="js-error-box" class="mb-6 bg-red-50 border border-red-100 rounded-2xl p-4 hidden flex items-start gap-3">
                 <i data-lucide="alert-circle" class="h-5 w-5 text-red-500 flex-shrink-0 mt-0.5"></i>
                 <p id="js-error-message" class="text-red-700 text-sm font-medium"></p>
             </div>
@@ -129,7 +129,7 @@
                         <div class="space-y-2 max-h-48 overflow-y-auto pr-1">
                             @foreach([
                                 'weo' => ['title' => 'Ward Education Officer (WEO)', 'icon' => 'users'],
-                                'head_teacher' => ['title' => 'Head Teacher', 'icon' => 'user-check'],
+                                'headmaster' => ['title' => 'Head Teacher', 'icon' => 'user-check'],
                                 'academic_teacher' => ['title' => 'Academic Teacher', 'icon' => 'graduation-cap'],
                                 'teacher' => ['title' => 'Class Teacher', 'icon' => 'graduation-cap']
                             ] as $key => $role)
@@ -151,15 +151,15 @@
                         <input type="text" name="ward" id="ward" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-400 focus:bg-white outline-none transition-all text-slate-800" placeholder="Specify ward context location">
                     </div>
 
-                   <div id="school-select-container" class="mt-5 hidden">
-    <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Select Your Primary School</label>
-    <select name="school_id" id="school_id" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-400 text-slate-800 font-medium">
-        <option value="">-- Choose Assigned School --</option>
-        @foreach($schools as $school)
-            <option value="{{ $school->id }}">{{ $school->name }} ({{ $school->ward }} Ward)</option>
-        @endforeach
-    </select>
-</div>
+                    <div id="school-select-container" class="mt-5 hidden">
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Select Your Primary School</label>
+                        <select name="school_id" id="school_id" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-400 text-slate-800 font-medium">
+                            <option value="">-- Choose Assigned School --</option>
+                            @foreach($schools as $school)
+                                <option value="{{ $school->id }}">{{ $school->name }} ({{ $school->ward }} Ward)</option>
+                            @endforeach
+                        </select>
+                    </div>
 
                     <div class="flex gap-4">
                         <button type="button" onclick="navigateStep(2, 1)" class="flex-1 border border-slate-200 hover:bg-slate-50 text-slate-600 font-bold py-3 rounded-full transition-colors">Back</button>
@@ -206,6 +206,7 @@
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>
     let currentStep = 1;
+
     function updateStepperUI(step) {
         for (let i = 1; i <= 3; i++) {
             const circle = document.getElementById(`step-circle-${i}`);
@@ -223,13 +224,26 @@
             }
             if (line) line.className = `w-16 h-0.5 mx-1 ${step > i ? 'bg-sky-500' : 'bg-slate-100'}`;
         }
-        lucide.createIcons();
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
     }
+
     function showError(msg) {
         const errBox = document.getElementById('js-error-box');
         const errMsg = document.getElementById('js-error-message');
-        if(msg) { errMsg.textContent = msg; errBox.classList.remove('hidden'); } else { errBox.classList.add('hidden'); }
+        if (errBox && errMsg) {
+            if (msg) { 
+                errMsg.textContent = msg; 
+                errBox.classList.remove('hidden'); 
+                errBox.classList.add('flex'); // Add flex for layout layout alignment
+            } else { 
+                errBox.classList.add('hidden'); 
+                errBox.classList.remove('flex');
+            }
+        }
     }
+
     function validateStep(step) {
         showError('');
         if (step === 1) {
@@ -244,56 +258,84 @@
             const name = document.getElementById('full_name').value;
             const selectedRole = document.querySelector('input[name="role"]:checked');
             if (!name || !selectedRole) return "Please provide all mandatory personnel identification data";
+            
+            // FIXED: Key lookup includes 'headmaster' instead of 'head_teacher' to mirror config arrays
             const role = selectedRole.value;
             if (role === 'weo' && !document.getElementById('ward').value) return "WEO accounts must supply an assigned administrative ward location";
-            if (['head_teacher', 'teacher', 'academic_teacher'].includes(role) && !document.getElementById('school_id').value) return "Please specify your stationed primary school";
+            if (['headmaster', 'teacher', 'academic_teacher'].includes(role) && !document.getElementById('school_id').value) return "Please specify your stationed primary school";
         }
         return null;
     }
+
     function handleRoleSelection(role) {
         document.querySelectorAll('.role-card').forEach(card => card.className = 'role-card block p-3 border border-slate-200 rounded-xl cursor-pointer transition-all bg-slate-50/50 text-slate-700');
         const targetLabel = document.getElementById(`label-${role}`);
         if (targetLabel) targetLabel.className = 'role-card block p-3 border border-sky-400 rounded-xl cursor-pointer transition-all bg-sky-50/40 text-slate-800';
-        document.getElementById('weo-block').classList.toggle('hidden', role !== 'weo');
-        document.getElementById('school-block').classList.toggle('hidden', role === 'weo');
+        
+        const weoBlock = document.getElementById('weo-block');
+        const schoolBlock = document.getElementById('school-select-container');
+        
+        // FIXED: Dynamically handles layout hides perfectly
+        if (weoBlock) weoBlock.classList.toggle('hidden', role !== 'weo');
+        if (schoolBlock) schoolBlock.classList.toggle('hidden', role === 'weo');
     }
+
     function compileReviewPage() {
         document.getElementById('review-email').textContent = document.getElementById('email').value;
         document.getElementById('review-name').textContent = document.getElementById('full_name').value;
         document.getElementById('review-phone').textContent = document.getElementById('phone').value || 'None Declared';
-        const role = document.querySelector('input[name="role"]:checked').value;
-        document.getElementById('review-role').textContent = role.replace('_', ' ').toUpperCase();
-        if (role === 'weo') {
-            document.getElementById('review-context-label').textContent = "Assigned Ward:";
-            document.getElementById('review-context-val').textContent = document.getElementById('ward').value;
-        } else {
-            document.getElementById('review-context-label').textContent = "Stationed School:";
-            const sel = document.getElementById('school_id');
-            document.getElementById('review-context-val').textContent = sel.options[sel.selectedIndex].text;
+        
+        const selectedRole = document.querySelector('input[name="role"]:checked');
+        if (selectedRole) {
+            const role = selectedRole.value;
+            document.getElementById('review-role').textContent = role.replace('_', ' ').toUpperCase();
+            if (role === 'weo') {
+                document.getElementById('review-context-label').textContent = "Assigned Ward:";
+                document.getElementById('review-context-val').textContent = document.getElementById('ward').value;
+            } else {
+                document.getElementById('review-context-label').textContent = "Stationed School:";
+                const sel = document.getElementById('school_id');
+                document.getElementById('review-context-val').textContent = sel.options[sel.selectedIndex].text;
+            }
         }
     }
-    function navigateStep(from, to) {
-        if (to > from && validateStep(from)) { showError(validateStep(from)); return; }
-        if (to === 3) compileReviewPage();
-        document.getElementById(`step-section-${from}`).classList.add('hidden');
-        document.getElementById(`step-section-${to}`).classList.remove('hidden');
-        updateStepperUI(to);
-    }
-    document.querySelectorAll('input[name="role"]').forEach(radio => {
-    radio.addEventListener('change', function() {
-        const schoolContainer = document.getElementById('school-select-container');
-        const schoolSelectField = document.getElementById('school_id');
 
-        if (this.value === 'weo') {
-            schoolContainer.classList.add('hidden');
-            schoolSelectField.required = false;
-            schoolSelectField.value = ""; // Clear choice if switched
-        } else {
-            schoolContainer.classList.remove('hidden');
-            schoolSelectField.required = true;
+    function navigateStep(from, to) {
+        const error = validateStep(from);
+        if (to > from && error) { 
+            showError(error); 
+            return; 
         }
+        if (to === 3) compileReviewPage();
+        
+        const currentSection = document.getElementById(`step-section-${from}`);
+        const nextSection = document.getElementById(`step-section-${to}`);
+        
+        if (currentSection && nextSection) {
+            currentSection.classList.add('hidden');
+            nextSection.classList.remove('hidden');
+            updateStepperUI(to);
+            currentStep = to;
+        }
+    }
+
+    // Handled dynamic runtime required flags securely
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('input[name="role"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const schoolSelectField = document.getElementById('school_id');
+                if (schoolSelectField) {
+                    if (this.value === 'weo') {
+                        schoolSelectField.required = false;
+                        schoolSelectField.value = ""; 
+                    } else {
+                        schoolSelectField.required = true;
+                    }
+                }
+            });
+        });
     });
-});
+
     // Initializer calls
     updateStepperUI(1);
     lucide.createIcons();

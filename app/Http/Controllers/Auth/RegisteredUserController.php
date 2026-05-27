@@ -11,55 +11,62 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
-use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
-
 
 class RegisteredUserController extends Controller
 {
     /**
      * Display the registration view.
+     * Fetches all database primary schools alphabetically to populate the dropdown.
      */
     public function create(): View
-{
-    // Fetch all schools from your database alphabetically
-    $schools = School::orderBy('name', 'asc')->get();
+    {
+        $schools = School::orderBy('name', 'asc')->get();
 
-    // Pass the schools variable straight down into your blade view template
-    return view('auth.register', compact('schools'));
-}
+        return view('auth.register', compact('schools'));
+    }
 
     /**
      * Handle an incoming registration request.
+     * Validates personnel identification, roles, and structural constraints.
      *
-     * @throws ValidationException
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request): RedirectResponse
-{
-    // 1. Strict Validation: Check fields before touching the database
-    $request->validate([
-        'name' => ['required', 'string', 'max:255'],
-        'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-        'password' => ['required', 'confirmed', \Illuminate\Validation\Rules\Password::defaults()],
-        'role' => ['required', 'string', 'in:weo,headmaster,teacher'],
-        // school_id is only mandatory if they are a headmaster or teacher
-        'school_id' => ['required_if:role,headmaster,teacher', 'nullable', 'exists:schools,id'],
-    ]);
+    {
+        // 1. Strict Request Validation
+        $request->validate([
+            'full_name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'phone' => ['nullable', 'string', 'max:20'],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'role' => ['required', 'string', 'in:weo,headmaster,academic_teacher,teacher'],
+            
+            // The administrative ward is strictly mandatory ONLY if the user chooses 'weo'
+            'ward' => ['required_if:role,weo', 'nullable', 'string', 'max:255'],
+            
+            // The school_id reference key is strictly mandatory for institutional staff accounts
+            'school_id' => ['required_if:role,headmaster,academic_teacher,teacher', 'nullable', 'exists:schools,id'],
+        ]);
 
-    // 2. Create the account mapping profile inside your MySQL database
-    $user = User::create([
-        'name' => $request->name,
-        'email' => $request->email,
-        'password' => Hash::make($request->password),
-        'role' => $request->role,
-        // If they are a WEO, they don't have a specific school, so save null
-        'school_id' => $request->role === 'weo' ? null : $request->school_id,
-    ]);
+        // 2. Data Persistence Model Mapping
+        // WEOs oversee entire wards, so we clear out school keys if they select 'weo'
+        $isWeo = $request->role === 'weo';
 
-    event(new Registered($user));
+        $user = User::create([
+            'name' => $request->full_name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => $request->role,
+            'ward' => $isWeo ? $request->ward : null,
+            'school_id' => $isWeo ? null : $request->school_id,
+        ]);
 
-    Auth::login($user);
+        // 3. Dispatch System Events and Initialize Session Connection Thread
+        event(new Registered($user));
 
-    return redirect(route('dashboard', absolute: false));
-}
+        Auth::login($user);
+
+        return redirect(route('dashboard', absolute: false));
+    }
 }
