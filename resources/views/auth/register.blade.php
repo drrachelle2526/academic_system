@@ -80,7 +80,7 @@
                 </div>
             @endif
 
-           <div id="js-error-box" class="mb-6 bg-red-50 border border-red-100 rounded-2xl p-4 hidden flex items-start gap-3">
+           <div id="js-error-box" class="mb-6 bg-red-50 border border-red-100 rounded-2xl p-4 hidden items-start gap-3">
                 <i data-lucide="alert-circle" class="h-5 w-5 text-red-500 flex-shrink-0 mt-0.5"></i>
                 <p id="js-error-message" class="text-red-700 text-sm font-medium"></p>
             </div>
@@ -212,17 +212,21 @@
             const circle = document.getElementById(`step-circle-${i}`);
             const numSpan = document.getElementById(`step-number-${i}`);
             const line = document.getElementById(`step-line-${i}`);
-            if (step > i) {
-                circle.className = "w-8 h-8 rounded-full flex items-center justify-center font-bold bg-sky-500 text-white shadow-sm";
-                numSpan.innerHTML = '<i data-lucide="check" class="h-4 w-4"></i>';
-            } else if (step === i) {
-                circle.className = "w-8 h-8 rounded-full flex items-center justify-center font-bold bg-sky-100 text-sky-600 border border-sky-300";
-                numSpan.textContent = i;
-            } else {
-                circle.className = "w-8 h-8 rounded-full flex items-center justify-center font-bold bg-slate-50 text-slate-400 border border-slate-200";
-                numSpan.textContent = i;
+            if (circle && numSpan) {
+                if (step > i) {
+                    circle.className = "w-8 h-8 rounded-full flex items-center justify-center font-bold bg-sky-500 text-white shadow-sm";
+                    numSpan.innerHTML = '<i data-lucide="check" class="h-4 w-4"></i>';
+                } else if (step === i) {
+                    circle.className = "w-8 h-8 rounded-full flex items-center justify-center font-bold bg-sky-100 text-sky-600 border border-sky-300";
+                    numSpan.textContent = i;
+                } else {
+                    circle.className = "w-8 h-8 rounded-full flex items-center justify-center font-bold bg-slate-50 text-slate-400 border border-slate-200";
+                    numSpan.textContent = i;
+                }
             }
-            if (line) line.className = `w-16 h-0.5 mx-1 ${step > i ? 'bg-sky-500' : 'bg-slate-100'}`;
+            if (line) {
+                line.className = `w-16 h-0.5 mx-1 ${step > i ? 'bg-sky-500' : 'bg-slate-100'}`;
+            }
         }
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
@@ -236,7 +240,7 @@
             if (msg) { 
                 errMsg.textContent = msg; 
                 errBox.classList.remove('hidden'); 
-                errBox.classList.add('flex'); // Add flex for layout layout alignment
+                errBox.classList.add('flex');
             } else { 
                 errBox.classList.add('hidden'); 
                 errBox.classList.remove('flex');
@@ -259,7 +263,6 @@
             const selectedRole = document.querySelector('input[name="role"]:checked');
             if (!name || !selectedRole) return "Please provide all mandatory personnel identification data";
             
-            // FIXED: Key lookup includes 'headmaster' instead of 'head_teacher' to mirror config arrays
             const role = selectedRole.value;
             if (role === 'weo' && !document.getElementById('ward').value) return "WEO accounts must supply an assigned administrative ward location";
             if (['headmaster', 'teacher', 'academic_teacher'].includes(role) && !document.getElementById('school_id').value) return "Please specify your stationed primary school";
@@ -275,9 +278,19 @@
         const weoBlock = document.getElementById('weo-block');
         const schoolBlock = document.getElementById('school-select-container');
         
-        // FIXED: Dynamically handles layout hides perfectly
         if (weoBlock) weoBlock.classList.toggle('hidden', role !== 'weo');
         if (schoolBlock) schoolBlock.classList.toggle('hidden', role === 'weo');
+        
+        const schoolSelectField = document.getElementById('school_id');
+        const wardInputField = document.getElementById('ward');
+        
+        if (role === 'weo') {
+            if (schoolSelectField) { schoolSelectField.required = false; schoolSelectField.value = ""; }
+            if (wardInputField) { wardInputField.required = true; }
+        } else {
+            if (schoolSelectField) { schoolSelectField.required = true; }
+            if (wardInputField) { wardInputField.required = false; wardInputField.value = ""; }
+        }
     }
 
     function compileReviewPage() {
@@ -319,26 +332,9 @@
         }
     }
 
-    // Handled dynamic runtime required flags securely
     document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('input[name="role"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                const schoolSelectField = document.getElementById('school_id');
-                if (schoolSelectField) {
-                    if (this.value === 'weo') {
-                        schoolSelectField.required = false;
-                        schoolSelectField.value = ""; 
-                    } else {
-                        schoolSelectField.required = true;
-                    }
-                }
-            });
-        });
+        updateStepperUI(1);
     });
-
-    // Initializer calls
-    updateStepperUI(1);
-    lucide.createIcons();
 </script>
 </body>
 </html>
