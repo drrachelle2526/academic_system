@@ -17,9 +17,9 @@
 
             <ul class="hidden md:flex gap-8 text-slate-600 font-semibold">
                 <li><a href="#" class="hover:text-sky-500 transition-colors">Home</a></li>
-                <li><a href="#about" class="hover:text-sky-500 transition-colors">About Hierarchy</a></li>
-                <li><a href="#features" class="hover:text-sky-500 transition-colors">Features</a></li>
-                <li><a href="#contact" class="hover:text-sky-500 transition-colors">Contact Us</a></li>
+                <li><a href="#about" class="hover:text-sky-500 transition-colors">About</a></li>
+                <li><a href="#features" class="hover:text-sky-500 transition-colors">Overview</a></li>
+                <li><a href="#contact" class="hover:text-sky-500 transition-colors">Contact</a></li>
             </ul>
 
             <div class="flex items-center gap-6">
@@ -28,7 +28,7 @@
                 </a>
                 <a href="/register"
                    class="bg-sky-500 hover:bg-sky-600 text-white px-6 py-2.5 rounded-full shadow font-bold transition-all transform hover:-translate-y-0.5">
-                    Get Started
+                    Register
                 </a>
             </div>
         </div>
@@ -51,21 +51,21 @@
                 </p>
 
                 <div class="mt-8 flex flex-wrap gap-4">
-                    <a href="/register"
+                    <a href="#features"
                        class="bg-white text-sky-600 px-7 py-3.5 rounded-full font-bold shadow-md hover:bg-sky-50 transition-colors text-center">
-                        Get Free Demo
+                        Explore System
                     </a>
                     <a href="#features"
                        class="bg-sky-600/40 text-white border border-sky-300/30 px-7 py-3.5 rounded-full font-bold hover:bg-sky-600/60 transition-colors text-center">
-                        See System Features
+                        Learn More
                     </a>
                 </div>
             </div>
 
             <div class="relative z-10">
                 <img
-                    src="https://images.unsplash.com/photo-1509062522246-3755977927d7"
-                    alt="students inside secondary classroom"
+                    src="{{ asset('images/first_pic.png') }}"
+                    alt="People illustrations by Storyset"
                     class="rounded-3xl shadow-2xl w-full max-h-[380px] object-cover border-4 border-white/20"
                 >
             </div>
@@ -150,7 +150,7 @@
 
             <div class="relative z-10 flex justify-center items-center">
                 <img 
-                    src="https://images.pexels.com/photos/8618210/pexels-photo-8618210.jpeg?auto=compress&cs=tinysrgb&w=800" 
+                    src="{{ asset('images/second_pic.png') }}" 
                     alt="Verification Setup Chain Illustration" 
                     class="rounded-3xl shadow-2xl w-full max-w-md border-4 border-white/20 object-cover max-h-[380px]"
                 />
@@ -211,21 +211,39 @@
     </section>
 
    <section id="contact" class="max-w-7xl mx-auto px-6 pb-12 pt-6">
-        <div class="bg-sky-500 rounded-[40px] p-10 md:p-14 text-center relative overflow-hidden shadow-2xl">
-            <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-4 relative z-10 leading-tight">
-                Ready to Transform Your School Configuration?
-            </h2>
-            <p class="text-sky-100 mb-8 max-w-2xl mx-auto text-base relative z-10 font-medium">
-                Join regional academic departments optimizing performance management workflows with EduMonitor framework security configurations.
-            </p>
-            
-            <div class="relative z-10">
-                <a href="/register"
-                   class="inline-block bg-white text-sky-600 hover:bg-sky-50 font-bold px-8 py-3.5 rounded-full transition-all shadow-lg transform hover:-translate-y-0.5">
-                    Get Started Right Now
-                </a>
+        <div class="bg-sky-500 rounded-[40px] p-10 md:p-14 relative overflow-hidden shadow-2xl">
+            <div class="grid gap-8 lg:grid-cols-[1.5fr_1fr] items-center">
+                <div class="relative z-10 text-white">
+                    <h2 class="text-3xl md:text-4xl font-extrabold mb-4 leading-tight">
+                        Ready to Transform Your School Configuration?
+                    </h2>
+                    <p class="text-sky-100 mb-8 max-w-2xl text-base font-medium">
+                        Join regional academic departments optimizing performance management workflows with EduMonitor framework security configurations.
+                    </p>
+                    <div class="grid gap-4 sm:grid-cols-2">
+                        <div class="rounded-3xl bg-white/10 border border-white/20 p-5">
+                            <p class="text-sky-100 text-sm uppercase tracking-[.2em] mb-2">Contact Email</p>
+                            <p class="text-white font-semibold">support@edumonitor.tz</p>
+                        </div>
+                        <div class="rounded-3xl bg-white/10 border border-white/20 p-5">
+                            <p class="text-sky-100 text-sm uppercase tracking-[.2em] mb-2">Phone</p>
+                            <p class="text-white font-semibold">+255 123 456 789</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative z-10 bg-white/10 border border-white/20 rounded-[30px] p-8 text-white shadow-lg">
+                    <h3 class="text-xl font-bold mb-4">Contact the Education Office</h3>
+                    <p class="text-sky-100 leading-relaxed mb-6">
+                        For implementation support, registration questions, or project onboarding, contact us using the email or phone number shown above and we will connect you with the right team.
+                    </p>
+                    <a href="/register"
+                       class="inline-block bg-white text-sky-600 font-bold px-8 py-3.5 rounded-full transition-all hover:bg-sky-50 shadow-lg">
+                        Start Registration
+                    </a>
+                </div>
             </div>
-            
+
             <div class="absolute -bottom-10 -right-10 w-48 h-48 bg-sky-400 rounded-full opacity-40"></div>
             <div class="absolute -top-10 -left-10 w-32 h-32 bg-sky-400 rounded-full opacity-30"></div>
         </div>
