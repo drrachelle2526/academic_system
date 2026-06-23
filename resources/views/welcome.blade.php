@@ -256,7 +256,7 @@
                 <span class="text-sky-950 font-bold tracking-wide">EduMonitor</span>
             </div>
             <p class="text-slate-500 text-sm text-center sm:text-right font-medium">
-                &copy; {{ date('Y') }} EduMonitor &bull; United Republic of Tanzania. All institutional rights reserved.
+                &copy; {{ date('Y') }} EduMonitor &bull;  
             </p>
         </div>
     </footer>

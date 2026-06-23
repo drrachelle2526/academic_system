@@ -40,21 +40,28 @@ class RegisteredUserController extends Controller
             'school_id' => ['required_if:role,headmaster,academic_teacher,teacher', 'nullable', 'exists:schools,id'],
         ]);
 
-        $isWeo = $request->role === 'weo';
+ $isWeo = $request->role === 'weo';
 
-        $user = User::create([
-            'name' => $request->full_name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => $request->role,
-            'ward' => $isWeo ? $request->ward : null,
-            'school_id' => $isWeo ? null : $request->school_id,
-        ]);
+$status = $request->role === 'teacher' ? 'approved' : 'pending';
+
+$user = User::create([
+    'name' => $request->full_name,
+    'email' => $request->email,
+    'password' => Hash::make($request->password),
+    'role' => $request->role,
+    'role_status' => $status,
+    'ward' => $isWeo ? $request->ward : null,
+    'school_id' => $isWeo ? null : $request->school_id,
+]);
 
         event(new Registered($user));
 
-        Auth::login($user);
+        if ($status === 'approved') {
+    Auth::login($user);
+    return redirect()->route('dashboard');
+}
 
-        return redirect(route('dashboard', absolute: false));
+return redirect()->route('login')
+    ->with('status', 'Your account is awaiting approval.');
     }
 }

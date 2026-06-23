@@ -1,0 +1,16 @@
+[90m= [39m[34;4mApp\Models\User[39;24m {#8135
+    [34mid[39m: [35m11[39m,
+    [34mname[39m: [32m"[39m[32mRachel[39m[32m"[39m,
+    [34memail[39m: [32m"[39m[32mheadmaster@gmail.com[39m[32m"[39m,
+    [34mrole[39m: [32m"[39m[32mheadmaster[39m[32m"[39m,
+    [34mrequested_role[39m: [36mnull[39m,
+    [34mrole_status[39m: [36mnull[39m,
+    [34mphone[39m: [36mnull[39m,
+    [34mward[39m: [36mnull[39m,
+    [34mschool_id[39m: [35m3[39m,
+    [34memail_verified_at[39m: [36mnull[39m,
+    #[33mpassword[39m: [32m"[39m\$[32m2y[39m\$[32m12[39m\$[32mpurwvWE5aUxew1w4B32mnOr7Z6joxyfTcGvpVxrjWF0AvdfNGhAPi[39m[32m"[39m,
+    #[33mremember_token[39m: [36mnull[39m,
+    [34mcreated_at[39m: [32m"[39m[32m2026-06-22 21:30:23[39m[32m"[39m,
+    [34mupdated_at[39m: [32m"[39m[32m2026-06-22 21:30:23[39m[32m"[39m,
+  }
