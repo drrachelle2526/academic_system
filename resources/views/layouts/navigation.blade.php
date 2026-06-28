@@ -20,6 +20,26 @@
                             {{ __('Teacher Module') }}
                         </x-nav-link>
                     @endif
+                    @if(Auth::check() && Auth::user()->role === 'academic_teacher' && Auth::user()->role_status === 'approved')
+                        <x-nav-link :href="route('module.academicTeacher')" :active="request()->routeIs('module.academicTeacher')">
+                            {{ __('Academic Module') }}
+                        </x-nav-link>
+                    @endif
+                    @if(Auth::check() && Auth::user()->role === 'headmaster' && Auth::user()->role_status === 'approved')
+                        <x-nav-link :href="route('module.headTeacher')" :active="request()->routeIs('module.headTeacher')">
+                            {{ __('Head Teacher Module') }}
+                        </x-nav-link>
+                    @endif
+                    @if(Auth::check() && Auth::user()->role === 'weo' && Auth::user()->role_status === 'approved')
+                        <x-nav-link :href="route('module.weo')" :active="request()->routeIs('module.weo')">
+                            {{ __('WEO Module') }}
+                        </x-nav-link>
+                    @endif
+                    @if(Auth::check() && Auth::user()->role === 'admin' && Auth::user()->role_status === 'approved')
+                        <x-nav-link :href="route('module.admin')" :active="request()->routeIs('module.admin')">
+                            {{ __('Admin Module') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -78,6 +98,26 @@
             @if(Auth::check() && Auth::user()->role === 'teacher')
                 <x-responsive-nav-link :href="route('module.teacher')" :active="request()->routeIs('module.teacher')">
                     {{ __('Teacher Module') }}
+                </x-responsive-nav-link>
+            @endif
+            @if(Auth::check() && Auth::user()->role === 'academic_teacher' && Auth::user()->role_status === 'approved')
+                <x-responsive-nav-link :href="route('module.academicTeacher')" :active="request()->routeIs('module.academicTeacher')">
+                    {{ __('Academic Module') }}
+                </x-responsive-nav-link>
+            @endif
+            @if(Auth::check() && Auth::user()->role === 'headmaster' && Auth::user()->role_status === 'approved')
+                <x-responsive-nav-link :href="route('module.headTeacher')" :active="request()->routeIs('module.headTeacher')">
+                    {{ __('Head Teacher Module') }}
+                </x-responsive-nav-link>
+            @endif
+            @if(Auth::check() && Auth::user()->role === 'weo' && Auth::user()->role_status === 'approved')
+                <x-responsive-nav-link :href="route('module.weo')" :active="request()->routeIs('module.weo')">
+                    {{ __('WEO Module') }}
+                </x-responsive-nav-link>
+            @endif
+            @if(Auth::check() && Auth::user()->role === 'admin' && Auth::user()->role_status === 'approved')
+                <x-responsive-nav-link :href="route('module.admin')" :active="request()->routeIs('module.admin')">
+                    {{ __('Admin Module') }}
                 </x-responsive-nav-link>
             @endif
         </div>

@@ -40,28 +40,34 @@ class RegisteredUserController extends Controller
             'school_id' => ['required_if:role,headmaster,academic_teacher,teacher', 'nullable', 'exists:schools,id'],
         ]);
 
- $isWeo = $request->role === 'weo';
+        $isWeo = $request->role === 'weo';
+        $status = $request->role === 'teacher' ? 'approved' : 'pending';
 
-$status = $request->role === 'teacher' ? 'approved' : 'pending';
-
-$user = User::create([
-    'name' => $request->full_name,
-    'email' => $request->email,
-    'password' => Hash::make($request->password),
-    'role' => $request->role,
-    'role_status' => $status,
-    'ward' => $isWeo ? $request->ward : null,
-    'school_id' => $isWeo ? null : $request->school_id,
-]);
+        $user = User::create([
+            'name' => $request->full_name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => $request->role,
+            'role_status' => $status,
+            'ward' => $isWeo ? $request->ward : null,
+            'school_id' => $isWeo ? null : $request->school_id,
+        ]);
 
         event(new Registered($user));
 
         if ($status === 'approved') {
-    Auth::login($user);
-    return redirect()->route('dashboard');
-}
+            Auth::login($user);
 
-return redirect()->route('login')
-    ->with('status', 'Your account is awaiting approval.');
+            return redirect()->route('dashboard');
+        }
+
+        $approvalMessage = match ($request->role) {
+            'weo' => 'Registration successful. Please wait for approval from the System Administrator.',
+            'headmaster' => 'Registration successful. Please wait for approval from your WEO.',
+            'academic_teacher' => 'Registration successful. Please wait for approval from your Head Teacher.',
+            default => 'Registration successful. Please wait for approval.',
+        };
+
+        return redirect()->route('login')->with('status', $approvalMessage);
     }
 }
