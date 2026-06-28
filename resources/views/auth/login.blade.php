@@ -59,6 +59,13 @@
                 </div>
             @endif
 
+            @if (session('status'))
+                <div class="mb-6 bg-amber-50 border border-amber-100 rounded-2xl p-4 flex items-start gap-3">
+                    <i data-lucide="clock" class="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5"></i>
+                    <p class="text-amber-800 text-sm font-medium">{{ session('status') }}</p>
+                </div>
+            @endif
+
             <form action="{{ route('login') }}" method="POST" class="space-y-5">
                 @csrf
 
