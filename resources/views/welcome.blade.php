@@ -43,7 +43,7 @@
                 </div>
 
                 <h2 class="text-4xl md:text-5xl font-extrabold text-white leading-tight">
-                    Web-Based Academic & Performance Monitoring System
+                     Academic & Performance Monitoring System for Primary Schools
                 </h2>
 
                 <p class="mt-6 text-sky-100 text-lg leading-relaxed">

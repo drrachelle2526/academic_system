@@ -125,40 +125,40 @@
                     </div>
 
                     <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">Designated Jurisdictional Role *</label>
-                        <div class="space-y-2 max-h-48 overflow-y-auto pr-1">
-                            @foreach([
-                                'weo' => ['title' => 'Ward Education Officer (WEO)', 'icon' => 'users'],
-                                'headmaster' => ['title' => 'Head Teacher', 'icon' => 'user-check'],
-                                'academic_teacher' => ['title' => 'Academic Teacher', 'icon' => 'graduation-cap'],
-                                'teacher' => ['title' => 'Class Teacher', 'icon' => 'graduation-cap']
-                            ] as $key => $role)
-                                <label id="label-{{ $key }}" class="role-card block p-3 border border-slate-200 rounded-xl cursor-pointer transition-all bg-slate-50/50 text-slate-700">
-                                    <div class="flex items-center gap-3">
-                                        <input type="radio" name="role" value="{{ $key }}" onchange="handleRoleSelection('{{ $key }}')">
-                                        <div class="flex items-center gap-2 font-semibold text-slate-700 text-sm">
-                                            <i data-lucide="{{ $role['icon'] }}" class="h-4 w-4 text-slate-400"></i>
-                                            {{ $role['title'] }}
-                                        </div>
-                                    </div>
-                                </label>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Ward *</label>
+                        <select name="ward" id="ward" onchange="handleWardSelection()"
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-400 focus:bg-white transition-all text-slate-800">
+                            <option value="">-- Choose Your Ward --</option>
+                            @foreach($wards as $ward)
+                                <option value="{{ $ward }}">{{ ucwords($ward) }}</option>
                             @endforeach
-                        </div>
-                    </div>
-
-                    <div id="weo-block" class="hidden">
-                        <label class="block text-sm font-semibold text-slate-700 mb-1">Assigned Administrative Ward *</label>
-                        <input type="text" name="ward" id="ward" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-400 focus:bg-white outline-none transition-all text-slate-800" placeholder="Specify ward context location">
+                        </select>
                     </div>
 
                     <div id="school-select-container" class="mt-5 hidden">
-                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Select Your Primary School</label>
-                        <select name="school_id" id="school_id" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-400 text-slate-800 font-medium">
-                            <option value="">-- Choose Assigned School --</option>
-                            @foreach($schools as $school)
-                                <option value="{{ $school->id }}">{{ $school->name }} ({{ $school->ward }} Ward)</option>
-                            @endforeach
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Primary School *</label>
+                        <select name="school_id" id="school_id" onchange="handleSchoolSelection()" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-400 focus:bg-white transition-all text-slate-800">
+                            <option value="">-- Choose Your School --</option>
                         </select>
+                        <p class="text-xs text-slate-400 mt-2">Choose the ward first, then select a school from that ward.</p>
+                    </div>
+
+                    <div id="teaching-assignment-container" class="hidden grid gap-5 sm:grid-cols-2">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Subject You Teach *</label>
+                            <select name="teaching_subject_id" id="teaching_subject_id"
+                                    class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-400 focus:bg-white transition-all text-slate-800">
+                                <option value="">-- Choose Subject --</option>
+                                @foreach($subjects as $subject)
+                                    <option value="{{ $subject->id }}" @selected(old('teaching_subject_id') == $subject->id)>{{ $subject->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Classes You Teach *</label>
+                            <div id="teaching_class_options" class="min-h-[52px] max-h-44 overflow-y-auto rounded-xl border border-slate-200 bg-slate-50 p-3 space-y-2"></div>
+                            <p class="text-xs text-slate-400 mt-2">Select every class you teach for the chosen subject.</p>
+                        </div>
                     </div>
 
                     <div class="flex gap-4">
@@ -174,8 +174,9 @@
                         <div class="flex justify-between"><span class="text-slate-500 font-medium">Email Address:</span> <span id="review-email" class="font-bold text-slate-800">-</span></div>
                         <div class="flex justify-between"><span class="text-slate-500 font-medium">Full Name:</span> <span id="review-name" class="font-bold text-slate-800">-</span></div>
                         <div class="flex justify-between"><span class="text-slate-500 font-medium">Phone Terminal:</span> <span id="review-phone" class="font-bold text-slate-800">-</span></div>
-                        <div class="flex justify-between"><span class="text-slate-500 font-medium">Assigned Role:</span> <span id="review-role" class="font-bold text-slate-800">-</span></div>
-                        <div id="review-context-row" class="flex justify-between"><span id="review-context-label" class="text-slate-500 font-medium">Jurisdiction:</span> <span id="review-context-val" class="font-bold text-slate-800">-</span></div>
+                        <div class="flex justify-between"><span class="text-slate-500 font-medium">Assigned Role:</span> <span id="review-role" class="font-bold text-slate-800">Assigned after approval</span></div>
+                        <div class="flex justify-between"><span class="text-slate-500 font-medium">Ward / School:</span> <span id="review-context-val" class="font-bold text-slate-800">-</span></div>
+                        <div class="flex justify-between"><span class="text-slate-500 font-medium">Teaching Assignment:</span> <span id="review-assignment-val" class="font-bold text-slate-800">-</span></div>
                     </div>
 
                     <p class="text-xs text-slate-400 leading-normal">
@@ -260,57 +261,85 @@
         }
         if (step === 2) {
             const name = document.getElementById('full_name').value;
-            const selectedRole = document.querySelector('input[name="role"]:checked');
-            if (!name || !selectedRole) return "Please provide all mandatory personnel identification data";
-            
-            const role = selectedRole.value;
-            if (role === 'weo' && !document.getElementById('ward').value) return "WEO accounts must supply an assigned administrative ward location";
-            if (['headmaster', 'teacher', 'academic_teacher'].includes(role) && !document.getElementById('school_id').value) return "Please specify your stationed primary school";
+            const ward = document.getElementById('ward').value;
+            const school = document.getElementById('school_id').value;
+            if (!name || !ward || !school) return "Please provide all mandatory personnel identification data";
         }
         return null;
     }
 
-    function handleRoleSelection(role) {
-        document.querySelectorAll('.role-card').forEach(card => card.className = 'role-card block p-3 border border-slate-200 rounded-xl cursor-pointer transition-all bg-slate-50/50 text-slate-700');
-        const targetLabel = document.getElementById(`label-${role}`);
-        if (targetLabel) targetLabel.className = 'role-card block p-3 border border-sky-400 rounded-xl cursor-pointer transition-all bg-sky-50/40 text-slate-800';
-        
-        const weoBlock = document.getElementById('weo-block');
-        const schoolBlock = document.getElementById('school-select-container');
-        
-        if (weoBlock) weoBlock.classList.toggle('hidden', role !== 'weo');
-        if (schoolBlock) schoolBlock.classList.toggle('hidden', role === 'weo');
-        
-        const schoolSelectField = document.getElementById('school_id');
-        const wardInputField = document.getElementById('ward');
-        
-        if (role === 'weo') {
-            if (schoolSelectField) { schoolSelectField.required = false; schoolSelectField.value = ""; }
-            if (wardInputField) { wardInputField.required = true; }
-        } else {
-            if (schoolSelectField) { schoolSelectField.required = true; }
-            if (wardInputField) { wardInputField.required = false; wardInputField.value = ""; }
+    const schools = {{ Illuminate\Support\Js::from($schools->map(fn($school) => ['id' => $school->id, 'name' => $school->name, 'ward' => $school->ward])) }};
+    const schoolClasses = {{ Illuminate\Support\Js::from($schoolClasses->map(fn($class) => ['id' => $class->id, 'name' => $class->name, 'stream' => $class->stream, 'school_id' => $class->school_id])) }};
+
+    function handleWardSelection() {
+        const ward = document.getElementById('ward').value;
+        const schoolSelect = document.getElementById('school_id');
+        const container = document.getElementById('school-select-container');
+
+        if (!ward) {
+            schoolSelect.innerHTML = '<option value="">-- Choose Your School --</option>';
+            container.classList.add('hidden');
+            handleSchoolSelection();
+            return;
         }
+
+        const filteredSchools = schools.filter(school => school.ward === ward);
+        let options = '<option value="">-- Choose Your School --</option>';
+
+        filteredSchools.forEach(school => {
+            options += `<option value="${school.id}">${school.name}</option>`;
+        });
+
+        schoolSelect.innerHTML = options;
+        container.classList.remove('hidden');
+        handleSchoolSelection();
+    }
+
+    function handleSchoolSelection() {
+        const schoolId = Number(document.getElementById('school_id').value);
+        const classOptions = document.getElementById('teaching_class_options');
+        const container = document.getElementById('teaching-assignment-container');
+
+        if (!schoolId) {
+            classOptions.innerHTML = '';
+            container.classList.add('hidden');
+            return;
+        }
+
+        const filteredClasses = schoolClasses.filter(schoolClass => schoolClass.school_id === schoolId);
+        let options = '';
+
+        filteredClasses.forEach(schoolClass => {
+            const stream = schoolClass.stream && schoolClass.stream !== 'main' ? ` ${schoolClass.stream}` : '';
+            options += `
+                <label class="flex items-center gap-3 rounded-lg bg-white px-3 py-2 text-sm font-semibold text-slate-700 border border-slate-100">
+                    <input type="checkbox" name="teaching_class_ids[]" value="${schoolClass.id}" class="rounded border-slate-300 text-sky-500 focus:ring-sky-400">
+                    <span>${schoolClass.name}${stream}</span>
+                </label>
+            `;
+        });
+
+        classOptions.innerHTML = options || '<p class="text-sm font-medium text-slate-500">No classes uploaded for this school yet.</p>';
+        container.classList.remove('hidden');
     }
 
     function compileReviewPage() {
         document.getElementById('review-email').textContent = document.getElementById('email').value;
         document.getElementById('review-name').textContent = document.getElementById('full_name').value;
         document.getElementById('review-phone').textContent = document.getElementById('phone').value || 'None Declared';
-        
-        const selectedRole = document.querySelector('input[name="role"]:checked');
-        if (selectedRole) {
-            const role = selectedRole.value;
-            document.getElementById('review-role').textContent = role.replace('_', ' ').toUpperCase();
-            if (role === 'weo') {
-                document.getElementById('review-context-label').textContent = "Assigned Ward:";
-                document.getElementById('review-context-val').textContent = document.getElementById('ward').value;
-            } else {
-                document.getElementById('review-context-label').textContent = "Stationed School:";
-                const sel = document.getElementById('school_id');
-                document.getElementById('review-context-val').textContent = sel.options[sel.selectedIndex].text;
-            }
-        }
+        document.getElementById('review-role').textContent = 'Assigned after approval';
+
+        const ward = document.getElementById('ward').value;
+        const schoolSelect = document.getElementById('school_id');
+        const schoolLabel = schoolSelect.options[schoolSelect.selectedIndex]?.text || '-';
+        document.getElementById('review-context-val').textContent = `${ward} / ${schoolLabel}`;
+
+        const subjectSelect = document.getElementById('teaching_subject_id');
+        const subjectLabel = subjectSelect.options[subjectSelect.selectedIndex]?.text || '-';
+        const classLabels = Array.from(document.querySelectorAll('input[name="teaching_class_ids[]"]:checked'))
+            .map(input => input.closest('label')?.querySelector('span')?.textContent)
+            .filter(Boolean);
+        document.getElementById('review-assignment-val').textContent = classLabels.length > 0 ? `${subjectLabel} / ${classLabels.join(', ')}` : 'Assigned after approval';
     }
 
     function navigateStep(from, to) {

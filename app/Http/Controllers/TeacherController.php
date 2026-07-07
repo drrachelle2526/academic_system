@@ -11,46 +11,37 @@ class TeacherController extends Controller
      */
     public function show()
     {
-        $user = auth()->user();
+        $user = auth()->user()->load(['school', 'teachingSubject', 'teachingClasses']);
         return view('modules.teacher', compact('user'));
     }
 
     public function classLists()
     {
-        $user = auth()->user();
-
-        // Mock class list data for initial UI
-        $classLists = [
-            [
-                'name' => 'Standard 1 - A',
-                'students' => 28,
-                'subjects' => ['Mathematics', 'English', 'Science']
-            ],
-            [
-                'name' => 'Standard 2 - B',
-                'students' => 32,
-                'subjects' => ['Mathematics', 'Kiswahili', 'Science']
-            ],
-        ];
+        $user = auth()->user()->load('teachingSubject');
+        $classLists = $user->teachingClasses()
+            ->withCount('learners')
+            ->orderBy('name')
+            ->orderBy('stream')
+            ->get();
 
         return view('modules.classlists', compact('user', 'classLists'));
     }
 
     public function recordMarks()
     {
-        $user = auth()->user();
+        $user = auth()->user()->load(['teachingSubject', 'teachingClasses']);
         return view('modules.record_marks', compact('user'));
     }
 
     public function attendance()
     {
-        $user = auth()->user();
+        $user = auth()->user()->load(['teachingSubject', 'teachingClasses']);
         return view('modules.attendance', compact('user'));
     }
 
     public function reports()
     {
-        $user = auth()->user();
+        $user = auth()->user()->load(['teachingSubject', 'teachingClasses']);
         return view('modules.reports', compact('user'));
     }
 }

@@ -13,7 +13,25 @@ class RoleVerificationController extends Controller
         abort_unless($user->role_status === 'pending', 404);
         abort_unless($this->canApprove($request->user(), $user), 403);
 
-        $user->update(['role_status' => 'approved']);
+        $data = ['role_status' => 'approved'];
+
+        if ($request->user()->role === 'weo') {
+            $request->validate([
+                'assigned_role' => ['required', 'string', 'in:headmaster'],
+            ]);
+
+            $data['role'] = 'headmaster';
+        }
+
+        if ($request->user()->role === 'headmaster') {
+            $request->validate([
+                'assigned_role' => ['required', 'string', 'in:teacher,academic_teacher'],
+            ]);
+
+            $data['role'] = $request->assigned_role;
+        }
+
+        $user->update($data);
 
         return redirect()
             ->route('dashboard')
@@ -23,9 +41,15 @@ class RoleVerificationController extends Controller
     private function canApprove(User $approver, User $candidate): bool
     {
         return match ($candidate->role) {
-            'academic_teacher' => $approver->role === 'headmaster'
+            'academic_teacher', 'teacher' => (
+                $approver->role === 'headmaster'
                 && $approver->role_status === 'approved'
-                && $approver->school_id === $candidate->school_id,
+                && $approver->school_id === $candidate->school_id
+            ) || (
+                $approver->role === 'weo'
+                && $approver->role_status === 'approved'
+                && str($candidate->school?->ward)->trim()->lower()->toString() === str($approver->ward)->trim()->lower()->toString()
+            ),
             'headmaster' => $approver->role === 'weo'
                 && $approver->role_status === 'approved'
                 && str($candidate->school?->ward)->trim()->lower()->toString() === str($approver->ward)->trim()->lower()->toString(),

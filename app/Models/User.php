@@ -6,6 +6,7 @@ namespace App\Models;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -28,6 +29,8 @@ class User extends Authenticatable
         'role_status',
         'ward',       // Added so WEO ward records can be saved safely
         'school_id',  // Added to link institutional staff accounts to their schools
+        'teaching_subject_id',
+        'teaching_class_id',
     ];
 
     /**
@@ -56,5 +59,20 @@ class User extends Authenticatable
     public function school(): BelongsTo
     {
         return $this->belongsTo(School::class);
+    }
+
+    public function teachingSubject(): BelongsTo
+    {
+        return $this->belongsTo(Subject::class, 'teaching_subject_id');
+    }
+
+    public function teachingClass(): BelongsTo
+    {
+        return $this->belongsTo(SchoolClass::class, 'teaching_class_id');
+    }
+
+    public function teachingClasses(): BelongsToMany
+    {
+        return $this->belongsToMany(SchoolClass::class)->withTimestamps();
     }
 }
