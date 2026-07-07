@@ -26,6 +26,7 @@ Route::get('/dashboard', function () {
 
     if ($user->role === 'weo' && $user->role_status === 'approved') {
         $pendingUsers = User::with('school')
+            ->where('role', 'headmaster')
             ->where('role_status', 'pending')
             ->whereHas('school', fn ($query) => $query->where('ward', $user->ward))
             ->orderBy('name')
@@ -61,7 +62,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/module/head-teacher', [DepartmentModuleController::class, 'headTeacher'])->name('module.headTeacher');
     Route::post('/module/head-teacher/subjects', [DepartmentModuleController::class, 'storeSubject'])->name('headTeacher.subjects.store');
+    Route::post('/module/head-teacher/subjects/upload', [DepartmentModuleController::class, 'uploadSubjects'])->name('headTeacher.subjects.upload');
     Route::post('/module/head-teacher/classes', [DepartmentModuleController::class, 'storeClass'])->name('headTeacher.classes.store');
+    Route::post('/module/head-teacher/classes/upload', [DepartmentModuleController::class, 'uploadClasses'])->name('headTeacher.classes.upload');
     Route::get('/module/head-teacher/verify-results', [DepartmentModuleController::class, 'verifySchoolResults'])->name('headTeacher.verifyResults');
     Route::get('/module/head-teacher/approved-reports', [DepartmentModuleController::class, 'approvedReports'])->name('headTeacher.approvedReports');
 

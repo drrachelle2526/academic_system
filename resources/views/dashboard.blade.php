@@ -207,7 +207,7 @@
                             </div>
                             <div class="rounded-2xl border border-sky-100 bg-sky-50 p-5">
                                 <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Academic Setup</p>
-                                <p class="mt-2 text-sm font-semibold text-slate-700">Subjects and classes will be managed here next.</p>
+                                <p class="mt-2 text-sm font-semibold text-slate-700">Upload and manage subjects and classes.</p>
                             </div>
                         </div>
 
