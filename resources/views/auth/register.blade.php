@@ -319,7 +319,7 @@
             `;
         });
 
-        classOptions.innerHTML = options || '<p class="text-sm font-medium text-slate-500">No classes uploaded for this school yet.</p>';
+        classOptions.innerHTML = options || '<p class="text-sm font-medium text-slate-500">No classes registered for this school yet.</p>';
         container.classList.remove('hidden');
     }
 

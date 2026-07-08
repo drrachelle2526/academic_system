@@ -29,6 +29,7 @@ class RoleVerificationController extends Controller
             ]);
 
             $data['role'] = $request->assigned_role;
+            $data['school_id'] = $request->user()->school_id;
         }
 
         $user->update($data);
@@ -44,7 +45,13 @@ class RoleVerificationController extends Controller
             'academic_teacher', 'teacher' => (
                 $approver->role === 'headmaster'
                 && $approver->role_status === 'approved'
-                && $approver->school_id === $candidate->school_id
+                && (
+                    $approver->school_id === $candidate->school_id
+                    || (
+                        $candidate->school_id === null
+                        && str($candidate->ward)->trim()->lower()->toString() === str($approver->school?->ward)->trim()->lower()->toString()
+                    )
+                )
             ) || (
                 $approver->role === 'weo'
                 && $approver->role_status === 'approved'
